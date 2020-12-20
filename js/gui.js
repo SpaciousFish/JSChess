@@ -8,12 +8,14 @@ function MIRROR120(sq) {
 }
 
 $("#SetFen").click(function () {
+	ResetStockfish();
 	var fenStr = $("#fenIn").val();
 	NewGame(fenStr);
 	newGameAjax();
 });
 
 $('#TakeButton').click(function () {
+	ResetStockfish();
 	if (GameBoard.hisPly > 0) {
 		TakeMove();
 		GameBoard.ply = 0;
@@ -23,6 +25,7 @@ $('#TakeButton').click(function () {
 });
 
 $('#NewGameButton').click(function () {
+	ResetStockfish();
 	NewGame(START_FEN);
 	newGameAjax();
 });
@@ -72,6 +75,7 @@ function DeSelectSq(sq) {
 	}
 
 	$('.Square').each(function (index) {
+		$(this).removeClass('SqStockfish');
 		if (PieceIsOnSq(sq, $(this).position().top, $(this).position().left) == BOOL.TRUE) {
 			$(this).removeClass('SqSelected');
 		}
@@ -359,12 +363,12 @@ function PreSearch() {
 }
 
 $('#SearchButton').click(function () {
+	ResetStockfish();
 	GameController.PlayerSide = GameController.side ^ 1;
 	PreSearch();
 });
 
 function StartSearch() {
-
 	SearchController.depth = MAXDEPTH;
 	var tt = $('#ThinkTimeChoice').val();
 
@@ -378,7 +382,44 @@ function StartSearch() {
 }
 
 $("#FlipButton").click(function () {
+	ResetStockfish();
 	GameController.BoardFlipped ^= 1;
 	console.log("Flipped:" + GameController.BoardFlipped);
 	SetInitialBoardPieces();
 });
+
+$('#StockfishSearch').click(function () {
+	ResetStockfish();
+	console.log("called stockfish search");
+	var fenString = BoardToFen();
+	var depth = $('#StockfishDepth').val();
+	stockfish.postMessage("position fen " + fenString);
+	stockfish.postMessage("go depth " + depth);
+	stockfish.onmessage = function (event) {
+		var result = event.data ? event.data : event;
+		console.log(result);
+		$('#StockfishResult').text(result);
+		var words = result.split(' ');
+		SetSqStockfish(SqFromAlg(words[1][0] + words[1][1]));
+		SetSqStockfish(SqFromAlg(words[1][2] + words[1][3]));
+	};
+});
+
+function SetSqStockfish(sq) {
+
+	if (GameController.BoardFlipped == BOOL.TRUE) {
+		sq = MIRROR120(sq);
+	}
+
+	$('.Square').each(function (index) {
+		if (PieceIsOnSq(sq, $(this).position().top, $(this).position().left) == BOOL.TRUE) {
+			$(this).addClass('SqStockfish');
+		}
+	});
+}
+
+function ResetStockfish(){
+	$('.Square').each(function (index) {
+		$(this).removeClass('SqStockfish');
+	});
+}

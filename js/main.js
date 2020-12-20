@@ -1,8 +1,9 @@
-$(document).ajaxComplete(function() {
-  	
-  	
+$(document).ajaxComplete(function () {
+
+
 });
 
+var stockfish;
 
 $(function () {
 	init();
@@ -10,16 +11,23 @@ $(function () {
 	NewGame(START_FEN);
 	$('#fenIn').val(START_FEN);
 	newGameAjax();
-	
+	stockfish = STOCKFISH();
+	stockfish.postMessage("uci");
+	stockfish.postMessage("ucinewgame");
+	stockfish.onmessage = function(event) {
+		console.log(event.data ? event.data : event);
+		$('StockfishResult').text(event.data ? event.data : event);
+	};
+
 	$.ajax({
-		url : "bookXml.xml",
-		cache : false,
+		url: "bookXml.xml",
+		cache: false,
 		dataType: "xml",
-		success: function (xml) {				
+		success: function (xml) {
 			console.log("Read success");
-			$(xml).find('line').each(function() {	
+			$(xml).find('line').each(function () {
 				var trimmed = $(this).text();
-				trimmed = $.trim(trimmed);						
+				trimmed = $.trim(trimmed);
 				GameBoard.bookLines.push(trimmed);
 			});
 			GameController.BookLoaded = BOOL.TRUE;

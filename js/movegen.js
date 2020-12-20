@@ -217,7 +217,7 @@ function GenerateMoves() {
 	pceIndex = LoopNonSlideIndex[GameBoard.side];
 	pce = LoopNonSlidePce[pceIndex++];
 
-	while (pce != 0) {
+	while (pce != 0 && pce != null) {
 		for (pceNum = 0; pceNum < GameBoard.pceNum[pce]; ++pceNum) {
 			sq = GameBoard.pList[PCEINDEX(pce, pceNum)];
 
@@ -244,7 +244,7 @@ function GenerateMoves() {
 	pceIndex = LoopSlideIndex[GameBoard.side];
 	pce = LoopSlidePce[pceIndex++];
 
-	while (pce != 0) {
+	while (pce != 0 && pce != null) {
 		for (pceNum = 0; pceNum < GameBoard.pceNum[pce]; ++pceNum) {
 			sq = GameBoard.pList[PCEINDEX(pce, pceNum)];
 
@@ -335,7 +335,7 @@ function GenerateCaptures() {
 	pceIndex = LoopNonSlideIndex[GameBoard.side];
 	pce = LoopNonSlidePce[pceIndex++];
 
-	while (pce != 0) {
+	while (pce != 0 && pce != null) {
 		for (pceNum = 0; pceNum < GameBoard.pceNum[pce]; ++pceNum) {
 			sq = GameBoard.pList[PCEINDEX(pce, pceNum)];
 
@@ -360,7 +360,7 @@ function GenerateCaptures() {
 	pceIndex = LoopSlideIndex[GameBoard.side];
 	pce = LoopSlidePce[pceIndex++];
 
-	while (pce != 0) {
+	while (pce != 0 && pce != null) {
 		for (pceNum = 0; pceNum < GameBoard.pceNum[pce]; ++pceNum) {
 			sq = GameBoard.pList[PCEINDEX(pce, pceNum)];
 
