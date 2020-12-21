@@ -14,7 +14,7 @@ $(function () {
 	stockfish = STOCKFISH();
 	stockfish.postMessage("uci");
 	stockfish.postMessage("ucinewgame");
-	stockfish.onmessage = function(event) {
+	stockfish.onmessage = function (event) {
 		console.log(event.data ? event.data : event);
 		$('StockfishResult').text(event.data ? event.data : event);
 	};

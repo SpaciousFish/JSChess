@@ -269,10 +269,10 @@ function SearchPosition() {
 	var c;
 	ClearForSearch();
 
-	if(GameController.BookLoaded == BOOL.TRUE) {
+	if (GameController.BookLoaded == BOOL.TRUE) {
 		bestMove = BookMove();
-	
-		if(bestMove != NOMOVE) {
+
+		if (bestMove != NOMOVE) {
 			$("#OrderingOut").text("Ordering:");
 			$("#DepthOut").text("Depth: ");
 			$("#ScoreOut").text("Score:");

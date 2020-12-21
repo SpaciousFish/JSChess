@@ -24,7 +24,7 @@
 	<div id="CurrentFenDiv">
 		<span id="currentFenSpan"></span>
 	</div>
-	<span id="LoadingBook">Loading book, please wait....</span><br/>
+	<span id="LoadingBook">Loading book, please wait....</span><br />
 	<div id="EngineOutput">Thinking Time: <br />
 		<select id="ThinkTimeChoice">
 			<option value="1">1s</option>
@@ -33,7 +33,10 @@
 			<option value="6">6s</option>
 			<option value="8">8s</option>
 			<option value="10">10s</option>
-		</select><br /><br /><br />
+		</select><br />
+		<input type="radio" name="Engine" value="Default" checked> <label for="Default">Default</label>
+		<input type="radio" name="Engine" value="Stockfish"> <label for="Stockfish">Stockfish</label>
+		<br /><br />
 		<span id="BestOut">Best Move:</span><br />
 		<span id="DepthOut">Depth:</span><br />
 		<span id="ScoreOut">Score:</span><br />

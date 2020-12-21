@@ -447,17 +447,17 @@ function printGameLine() {
 
 	var moveNum = 0;
 	var gameLine = "";
-	for(moveNum = 0; moveNum < GameBoard.hisPly; ++moveNum) {
+	for (moveNum = 0; moveNum < GameBoard.hisPly; ++moveNum) {
 		gameLine += PrMove(GameBoard.history[moveNum].move) + " ";
 	}
 	return $.trim(gameLine);
-	
+
 }
 
-function LineMatch(BookLine,gameline) {
-	for(var len = 0; len < gameline.length; ++len) {
-		if(len>=BookLine.length) { return BOOL.FALSE;	}	
-		if(gameline[len] != BookLine[len]) { return BOOL.FALSE;	}	
+function LineMatch(BookLine, gameline) {
+	for (var len = 0; len < gameline.length; ++len) {
+		if (len >= BookLine.length) { return BOOL.FALSE; }
+		if (gameline[len] != BookLine[len]) { return BOOL.FALSE; }
 	}
 	return BOOL.TRUE;
 }
@@ -466,30 +466,30 @@ function BookMove() {
 
 	var gameLine = printGameLine();
 	var bookMoves = [];
-	
+
 	var lengthOfLineHack = gameLine.length;
-	
-	if(gameLine.length == 0) lengthOfLineHack--;
-	
-	for(var bookLineNum = 0; bookLineNum <GameBoard.bookLines.length; ++bookLineNum) {
-		
-		if(LineMatch(GameBoard.bookLines[bookLineNum],gameLine) == BOOL.TRUE) {
+
+	if (gameLine.length == 0) lengthOfLineHack--;
+
+	for (var bookLineNum = 0; bookLineNum < GameBoard.bookLines.length; ++bookLineNum) {
+
+		if (LineMatch(GameBoard.bookLines[bookLineNum], gameLine) == BOOL.TRUE) {
 			var move = GameBoard.bookLines[bookLineNum].substr(lengthOfLineHack + 1, 4);
-			if(move.length==4) {
-				var from = SqFromAlg(move.substr(0,2));
-				var to = SqFromAlg(move.substr(2,2));
-				varInternalMove = ParseMove(from,to);
+			if (move.length == 4) {
+				var from = SqFromAlg(move.substr(0, 2));
+				var to = SqFromAlg(move.substr(2, 2));
+				varInternalMove = ParseMove(from, to);
 				bookMoves.push(varInternalMove);
-			} 
+			}
 		}
-		  
+
 	}
-	
+
 	console.log("Total + " + bookMoves.length + " moves in array");
-	
-	if(bookMoves.length==0) return NOMOVE;
-	
-	var num = Math.floor(Math.random()*bookMoves.length);
-	
+
+	if (bookMoves.length == 0) return NOMOVE;
+
+	var num = Math.floor(Math.random() * bookMoves.length);
+
 	return bookMoves[num];
 }

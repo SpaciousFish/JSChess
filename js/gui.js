@@ -66,6 +66,20 @@ function SetInitialBoardPieces() {
 			AddGUIPiece(sq120, pce);
 		}
 	}
+
+	var array = [];
+	$('.Square').each(function (index) {
+		if ($(this).hasClass('SqStockfish')) {
+			array.push(index);
+			$(this).removeClass('SqStockfish');
+		}
+	});
+
+	$('.Square').each(function (index) {
+		if (array.includes(63 - index)) {
+			$(this).addClass('SqStockfish');
+		}
+	})
 }
 
 function DeSelectSq(sq) {
@@ -369,20 +383,62 @@ $('#SearchButton').click(function () {
 });
 
 function StartSearch() {
-	SearchController.depth = MAXDEPTH;
-	var tt = $('#ThinkTimeChoice').val();
+	var radioButtons = document.getElementsByName("Engine");
+	var value;
+	for (var i = 0; i < radioButtons.length; i++) {
+		if (radioButtons[i].checked == true) {
+			value = radioButtons[i].value;
+		}
+	}
+	if (value == "Default") {
+		SearchController.depth = MAXDEPTH;
+		var tt = $('#ThinkTimeChoice').val();
 
-	SearchController.time = parseInt(tt) * 1000;
-	SearchPosition();
+		SearchController.time = parseInt(tt) * 1000;
+		SearchPosition();
 
-	MakeMove(SearchController.best);
-	MoveGUIPiece(SearchController.best);
-	$('#ThinkingPng').remove();
-	CheckAndSet();
+		MakeMove(SearchController.best);
+		MoveGUIPiece(SearchController.best);
+		$('#ThinkingPng').remove();
+		CheckAndSet();
+	}
+	else {
+		var fenString = BoardToFen();
+		var tt = $('#ThinkTimeChoice').val();
+		stockfish.postMessage("position fen " + fenString);
+		stockfish.postMessage("go movetime " + parseInt(tt) * 1000);
+		stockfish.onmessage = function (event) {
+			var result = event.data ? event.data : event;
+			console.log(result);
+			$('#StockfishResult').text(result);
+			var words = result.split(' ');
+			if (words != null && words != "" && words[0] == "bestmove") {
+				//bestmove g8f8 ponder d4c5
+				var move = ParseMove(SqFromAlg(words[1][0] + words[1][1]), (SqFromAlg(words[1][2] + words[1][3])));
+				if (move != 0) {
+					MakeMove(move);
+					MoveGUIPiece(move);
+					$('#ThinkingPng').remove();
+					CheckAndSet();
+					$("#BestOut").text("Best Move: " + PrMove(move));
+				}
+			} else if (words != null && words != "" && words[0] == "info") {
+				//info depth 44 seldepth 15 multipv 1 score mate/cp -7/30 (upperbound) nodes 1473334
+				$("#OrderingOut").text("Ordering: ");
+				$("#DepthOut").text("Depth: " + words[2]);
+				var scoreValue = words[8] == "mate" ? "Mate In " + words[9] + " moves" : (words[9] / 100).toFixed(2);
+				var scoreText = "Score: " + scoreValue;
+				$("#ScoreOut").text(scoreText);
+				var nodesValue = words[10] == "nodes" ? words[11] : words[12];
+				var nodesText = "Nodes: " + nodesValue;
+				$("#NodesOut").text(nodesText);
+				$("#TimeOut").text("Time: " + parseInt(tt).toFixed(1) + "s");
+			}
+		};
+	}
 }
 
 $("#FlipButton").click(function () {
-	ResetStockfish();
 	GameController.BoardFlipped ^= 1;
 	console.log("Flipped:" + GameController.BoardFlipped);
 	SetInitialBoardPieces();
@@ -418,7 +474,7 @@ function SetSqStockfish(sq) {
 	});
 }
 
-function ResetStockfish(){
+function ResetStockfish() {
 	$('.Square').each(function (index) {
 		$(this).removeClass('SqStockfish');
 	});
