@@ -1,14 +1,14 @@
 function SqFromAlg(moveAlg) {
 
-	if(moveAlg.length != 2) return SQUARES.NO_SQ;
-	
-	if(moveAlg[0] > 'h' || moveAlg[0] < 'a' ) return SQUARES.NO_SQ;
-	if(moveAlg[1] > '8' || moveAlg[1] < '1' ) return SQUARES.NO_SQ;
-	
+	if (moveAlg.length != 2) return SQUARES.NO_SQ;
+
+	if (moveAlg[0] > 'h' || moveAlg[0] < 'a') return SQUARES.NO_SQ;
+	if (moveAlg[1] > '8' || moveAlg[1] < '1') return SQUARES.NO_SQ;
+
 	file = moveAlg[0].charCodeAt() - 'a'.charCodeAt();
-	rank = moveAlg[1].charCodeAt() - '1'.charCodeAt();	
-	
-	return FR2SQ(file,rank);		
+	rank = moveAlg[1].charCodeAt() - '1'.charCodeAt();
+
+	return FR2SQ(file, rank);
 }
 
 function PrSq(sq) {

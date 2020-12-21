@@ -53,8 +53,6 @@
 	height: 30px;
 }
 
-
-
 .Piece {
 	position: absolute;
 }
@@ -75,6 +73,10 @@
 
 .SqSelected {
 	background-color:#216778;
+}
+
+.SqStockfish {
+	background-color:#fffe7a;
 }
 
 .clickElement { cursor:pointer }
