@@ -38,7 +38,7 @@
 
 #EngineOutput {
 	position: absolute;
-	left: 600px;
+	left: 630px;
 	top: 250px;	
 }
 
@@ -64,19 +64,19 @@
 }
 
 .Light {
-	background-color:#5fbcd3;
+	background-color: #769656;
 }
 
 .Dark {
-	background-color:#afdde9;
+	background-color:#eeeed2;
 }
 
 .SqSelected {
-	background-color:#216778;
+	background-color:#baca44;
 }
 
 .SqStockfish {
-	background-color:#fffe7a;
+	background-color:rgba(224, 224, 26, 0.959)
 }
 
 .clickElement { cursor:pointer }
